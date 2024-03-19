@@ -1,4 +1,5 @@
 const express = require('express');
+const mysql = require('mysql')
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
@@ -6,18 +7,25 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Serve the React app
-app.use(express.static('build'));
+const db = mysql.createConnection({
+   host: 'localhost',
+   user: 'root',
+   password: '',
+   database: 'crud'
+})
 
-// API endpoint for adding a product to the cart
-app.post('/api/add-to-cart', (req, res) => {
-  const { productName, quantity } = req.body;
+app.get('/', (re, res)=> {
+  return res.json("From BAckend Side");
+})
 
-  // Implement your addToCart logic here
-  console.log(`${quantity} ${productName}(s) added to the cart.`);
-
-  res.status(200).json({ message: 'Product added to cart' });
+app.get('/Product', (req, res) => {
+  const sql = "SELECT * FROM product";
+  db.query(sql, (err, data) => {
+      if (err) return res.json(err);
+      return res.json(data);
+  });
 });
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(8081, () => {
+  console.log("Server is listening on port 8081");
+});

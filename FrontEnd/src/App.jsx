@@ -34,7 +34,7 @@ const App = () => {
 
   useEffect(() => {
     // Fetch data from your backend to populate the products array
-    fetch('http://localhost:8080/get-products') // Replace with your actual API endpoint for getting products
+    fetch('http://localhost:8081/Product') // Replace with your actual API endpoint for getting products
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(error => console.error('Error fetching products:', error));
@@ -52,19 +52,20 @@ const App = () => {
       <section>
         {products.map(product => (
           <Product
-            key={product.id} // Add a unique key for each product
-            id={product.id}
-            farmer={product.farmer}
-            productName={product.productName}
-            image={product.image}
-            price={product.price}
-            description={product.description}
-            addToCart={addToCart}
-          />
+          key={product.id}
+          id={product.id}
+          farmerName={product.farmerName} // Corrected prop name
+          productName={product.productName}
+          imageSrc={product.imageSrc} // Corrected prop name
+          price={product.price}
+          description={product.description}
+          addToCart={addToCart}
+          
+        />
         ))}
+         {cartMessage && <p style={{ color: 'white' }}>{cartMessage}</p>}
       </section>
 
-      {cartMessage && <p>{cartMessage}</p>}
     </div>
   );
 };
